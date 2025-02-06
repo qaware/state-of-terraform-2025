@@ -25,4 +25,4 @@ terraform apply
 ```
 
 4. Open the Static Website in Browser
-   The link will be displayed in the console output of `terraform apply` and will look something like [ `https://some-example-bucket-for-a-static-website-180524.s3-website.localhost.localstack.cloud:4566/`](https://some-example-bucket-for-a-static-website-180524.s3-website.localhost.localstack.cloud:4566/).
+   The link will be displayed in the console output of `terraform apply` and will look something like [ `https://some-example-bucket-for-a-static-website.s3-website.localhost.localstack.cloud:4566/`](https://some-example-bucket-for-a-static-website.s3-website.localhost.localstack.cloud:4566/).

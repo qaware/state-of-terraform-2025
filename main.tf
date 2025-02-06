@@ -30,7 +30,7 @@ provider "aws" {
 # Resource: S3 Bucket for Static Website Hosting
 ##############################
 resource "aws_s3_bucket" "static_site_bucket" {
-  bucket = "some-example-bucket-for-a-static-website-180524"
+  bucket = var.bucket_name
 }
 
 ##############################
