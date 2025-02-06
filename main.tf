@@ -9,14 +9,14 @@ terraform {
 
 provider "aws" {
   region                      = "eu-north-1"
-  access_key                  = "test"  # Dummy access key for LocalStack
-  secret_key                  = "test"  # Dummy secret key for LocalStack
+  access_key                  = "test" # Dummy access key for LocalStack
+  secret_key                  = "test" # Dummy secret key for LocalStack
   skip_credentials_validation = true
   skip_requesting_account_id  = true
   s3_use_path_style           = true
 
   endpoints {
-    s3  = "http://localhost:4566"  # LocalStack default port for S3
+    s3 = "http://localhost:4566" # LocalStack default port for S3
     # Uncomment and configure additional endpoints as needed:
     # ec2       = "http://localhost:4566"
     # iam       = "http://localhost:4566"
@@ -38,12 +38,12 @@ resource "aws_s3_bucket" "static_site_bucket" {
 ##############################
 resource "aws_s3_object" "index_html" {
   bucket       = aws_s3_bucket.static_site_bucket.bucket
-  key          = "index.html"
+  key          = var.website_index_object_key
   source       = "index.html"
   content_type = "text/html"
 
   # Optional: Set ACL to public-read so the object is publicly accessible
-  acl          = "public-read"
+  acl = "public-read"
 }
 
 ##############################
@@ -52,9 +52,16 @@ resource "aws_s3_object" "index_html" {
 
 resource "aws_s3_bucket_website_configuration" "website_configuration" {
   bucket = aws_s3_bucket.static_site_bucket.id
-  
+
   index_document {
     suffix = "index.html"
+  }
+
+  lifecycle {
+    precondition {
+      condition     = aws_s3_object.index_html.key == "index.html"
+      error_message = "The object key of the index-object of the website must be 'index.html'."
+    }
   }
 }
 
@@ -96,10 +103,10 @@ resource "aws_s3_bucket_policy" "public_policy" {
 ##############################
 output "website_endpoint" {
   description = "The endpoint for the static website hosted on S3."
-  
+
   # This is for a website in "real" AWS:
   # value = aws_s3_bucket_website_configuration.website_configuration.website_endpoint
-  
+
   # For LocalStack the value is:
   value = "https://${aws_s3_bucket.static_site_bucket.bucket}.s3-website.localhost.localstack.cloud:4566/"
 }

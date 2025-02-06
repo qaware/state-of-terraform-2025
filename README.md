@@ -49,3 +49,10 @@ terraform plan --var bucket_name="1.1.1.1"
 terraform plan --var bucket_name="some-example-bucket-for-a-static-website"
 ```
 
+### 3. Preconditions
+
+This would fail the precondition:
+```bash
+terraform plan --var website_index_object_key="hello_world.html"
+```
+
