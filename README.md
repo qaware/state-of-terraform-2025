@@ -9,7 +9,8 @@ TODO
     * [2. Validations](#2-validations)
     * [3. Preconditions](#3-preconditions)
     * [4. Postconditions](#4-postconditions)
-    * [5. "Unit Tests"](#5-unit-tests)
+    * [5. "Unit Tests" / "Integration Tests"](#5-unit-tests--integration-tests)
+    * [6. Checks ("End-to-End Tests")](#6-checks-end-to-end-tests)
 <!-- TOC -->
 
 ## How to demo
@@ -85,3 +86,8 @@ terraform plan --var enable_versioning=false
 ```bash
 terraform test
 ```
+
+### 6. Checks ("End-to-End Tests")
+
+Rerun `terraform apply` and watch the output. You can also change something in the assertion in [`check.tf`](./check.tf)
+to see how the check fails.

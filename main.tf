@@ -117,12 +117,17 @@ resource "aws_s3_bucket_policy" "public_policy" {
 ##############################
 # Output: Website Endpoint
 ##############################
+locals {
+  # This is for a website in "real" AWS:
+  # website_endpoint = aws_s3_bucket_website_configuration.website_configuration.website_endpoint
+
+  # For LocalStack the value is:
+  website_endpoint = "https://${aws_s3_bucket.static_site_bucket.bucket}.s3-website.localhost.localstack.cloud:4566/"
+}
+
 output "website_endpoint" {
   description = "The endpoint for the static website hosted on S3."
 
-  # This is for a website in "real" AWS:
-  # value = aws_s3_bucket_website_configuration.website_configuration.website_endpoint
-
-  # For LocalStack the value is:
-  value = "https://${aws_s3_bucket.static_site_bucket.bucket}.s3-website.localhost.localstack.cloud:4566/"
+  # We have to use a local variable, because the output isn't available for the check block.
+  value = local.website_endpoint
 }
