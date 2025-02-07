@@ -80,14 +80,8 @@ Note, that this command does _not_ fail the postcondition:
 terraform plan --var enable_versioning=false
 ```
 
-### 5. "Unit Tests"
+### 5. "Unit Tests" / "Integration Tests"
 
 ```bash
 terraform test
 ```
-
-Note, that this will create the actual resources and test on the live objects!
-
-You can write tests which only test the plan output, by setting `command = plan` in the `run` block. The provided
-example will not work on the plan output, however, because it uses the `etag` of the S3 object, which is not known
-before the object is created.
