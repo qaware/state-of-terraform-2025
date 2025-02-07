@@ -1,5 +1,5 @@
 run "bucket_name_and_content" {
-  command = plan
+  command = apply
 
   variables {
     bucket_name = "test-bucket"
