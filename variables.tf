@@ -30,3 +30,9 @@ variable "website_index_object_key" {
   type        = string
   default     = "index.html"
 }
+
+variable "enable_versioning" {
+  description = "Whether to enable versioning on the S3 bucket."
+  type        = bool
+  default     = true
+}

@@ -7,6 +7,8 @@ TODO
   * [How to demo](#how-to-demo)
     * [1. Basic setup](#1-basic-setup)
     * [2. Validations](#2-validations)
+    * [3. Preconditions](#3-preconditions)
+    * [4. Postconditions](#4-postconditions)
 <!-- TOC -->
 
 ## How to demo
@@ -52,7 +54,27 @@ terraform plan --var bucket_name="some-example-bucket-for-a-static-website"
 ### 3. Preconditions
 
 This would fail the precondition:
+
 ```bash
 terraform plan --var website_index_object_key="hello_world.html"
 ```
 
+### 4. Postconditions
+
+This would fail the postcondition:
+
+```bash
+terraform apply --var enable_versioning=false
+```
+
+This would satisfy the postcondition again:
+
+```bash
+terraform apply --var enable_versioning=true
+```
+
+Note, that this command does _not_ fail the postcondition:
+
+```bash
+terraform plan --var enable_versioning=false
+```

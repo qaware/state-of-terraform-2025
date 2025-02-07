@@ -41,9 +41,17 @@ resource "aws_s3_object" "index_html" {
   key          = var.website_index_object_key
   source       = "index.html"
   content_type = "text/html"
+  acl          = "public-read"
 
-  # Optional: Set ACL to public-read so the object is publicly accessible
-  acl = "public-read"
+  lifecycle {
+    # For demo: recreate object when versioning behaviour changes, so version id reflects versioning status.
+    replace_triggered_by = [aws_s3_bucket_versioning.versioning_configuration]
+
+    postcondition {
+      condition     = try(self.version_id != "null", false)
+      error_message = "The index.html object must be versioned."
+    }
+  }
 }
 
 ##############################
@@ -62,6 +70,14 @@ resource "aws_s3_bucket_website_configuration" "website_configuration" {
       condition     = aws_s3_object.index_html.key == "index.html"
       error_message = "The object key of the index-object of the website must be 'index.html'."
     }
+  }
+}
+
+resource "aws_s3_bucket_versioning" "versioning_configuration" {
+  bucket = aws_s3_bucket.static_site_bucket.id
+
+  versioning_configuration {
+    status = var.enable_versioning ? "Enabled" : "Suspended"
   }
 }
 
